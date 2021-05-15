@@ -1,42 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import RoomModal from "../../components/Modal/RoomModal";
-import { isAuthenticated } from "../../api/auth";
-import { addTasksInRoom, getAllTaskOfRoom } from "../../api/office";
-import Typography from "@material-ui/core/Typography";
-import { useParams } from "react-router-dom";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Link } from "react-router-dom";
+import * as TiIcons from "react-icons/ti";
+import RoomModal from "../../../components/Modal/RoomModal";
+import { AddroomToOffice, getAllRoomsInOffice } from "../../../api/office";
+import { isAuthenticated } from "../../../api/auth";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
   paper: {
-    padding: theme.spacing(1),
-    // textAlign: "center",
+    padding: theme.spacing(2),
     color: theme.palette.text.secondary,
-    // whiteSpace: "nowrap",
-    marginBottom: theme.spacing(3),
-    background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-    color: "white",
+    margin: "10px",
   },
 }));
 
-const RoomTask = () => {
+const RoomsInOffice = () => {
   const classes = useStyles();
   const { token } = isAuthenticated();
-  const { roomId } = useParams();
-  const [taskModal, setTaskModal] = useState(false);
+  const [roomModal, setRoomModal] = useState(false);
 
   const [values, setValues] = useState({
     name: "",
     description: "",
   });
 
-  const [tasksInRoom, setTasksInRoom] = useState([]);
+  const [roomsInOffice, setRoomsInOffice] = useState([]);
 
   const handleClose = () => {
-    setTaskModal(false);
+    setRoomModal(false);
   };
 
   const handleChange = (e) => {
@@ -54,7 +52,7 @@ const RoomTask = () => {
       <>
         <Form>
           <Form.Group controlId="exampleForm.ControlInput1">
-            <Form.Label>Task Name</Form.Label>
+            <Form.Label>Office Name</Form.Label>
             <Form.Control type="text" value={values.name} name="name" onChange={handleChange} />
           </Form.Group>
 
@@ -65,21 +63,22 @@ const RoomTask = () => {
         </Form>
         <Button
           variant="primary"
+          style={{ marginBottom: "20px" }}
           onClick={() => {
-            addTaskToRoom();
+            roomAddToOffice();
           }}
         >
-          Add Task
+          Add Room {values.name}
         </Button>
       </>
     );
   };
 
-  const addTaskToRoom = () => {
-    addTasksInRoom(token, roomId, values).then((data) => {
+  const roomAddToOffice = () => {
+    AddroomToOffice(values, token).then((data) => {
       if (data.success) {
         alert(data.message);
-        setTaskModal(false);
+        setRoomModal(false);
         setValues(() => {
           return {
             name: "",
@@ -93,9 +92,9 @@ const RoomTask = () => {
   };
 
   const preload = () => {
-    getAllTaskOfRoom(token, roomId).then((data) => {
+    getAllRoomsInOffice(token).then((data) => {
       if (data.success) {
-        setTasksInRoom(data.room.tasks);
+        setRoomsInOffice(data.officeRooms);
         console.log(data);
       }
     });
@@ -112,39 +111,36 @@ const RoomTask = () => {
           variant="primary"
           style={{ marginBottom: "20px" }}
           onClick={() => {
-            setTaskModal(true);
+            setRoomModal(true);
           }}
         >
-          Add Task
+          Add Rooms
         </Button>
       </Form>
-      <DragDropContext>
-        <Droppable droppableId="characters">
-          {(provided, snapshot) => (
-            <Grid container spacing={3} innerRef={provided.innerRef} isDraggingOver={snapshot.isDraggingOver}>
-              {tasksInRoom.map((item, index) => {
-                return (
-                  <Grid key={index} item md={6} xs={12}>
-                    <Paper className={classes.paper}>
-                      <Typography align="center" variant="h5">
-                        {item.name}
-                      </Typography>
-                      <br />
-                      {item.description}
-                    </Paper>
-                  </Grid>
-                );
-              })}
-            </Grid>
-          )}
-        </Droppable>
-      </DragDropContext>
-
-      <RoomModal openModal={taskModal} title="Create Room" handleClose={handleClose}>
+      <Grid container>
+        <Grid item xs>
+          {roomsInOffice.map((item) => {
+            return (
+              <Paper className={classes.paper}>
+                <TiIcons.TiUser />
+                &nbsp; {item.name}
+                <br />
+                &nbsp; &nbsp; &nbsp; {item.description}
+                <br />
+                <br />
+                <Button variant="primary" as={Link} to={`/employerRoom/${item._id}`}>
+                  Open Room
+                </Button>
+              </Paper>
+            );
+          })}
+        </Grid>
+      </Grid>
+      <RoomModal openModal={roomModal} title="Create Room" handleClose={handleClose}>
         {childForm()}
       </RoomModal>
     </>
   );
 };
 
-export default RoomTask;
+export default RoomsInOffice;

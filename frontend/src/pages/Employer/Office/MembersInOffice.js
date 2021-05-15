@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { addMemberInOffice, getAllMembersInOffice } from "../../api/office";
+import { addMemberInOffice, getAllMembersInOffice } from "../../../api/office";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import { isAuthenticated } from "../../api/auth";
+import { isAuthenticated } from "../../../api/auth";
 import * as TiIcons from "react-icons/ti";
 
 const useStyles = makeStyles((theme) => ({

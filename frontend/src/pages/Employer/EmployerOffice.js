@@ -5,7 +5,7 @@ import { Button, Form } from "react-bootstrap";
 import { Redirect, Link } from "react-router-dom";
 import { createOfficeForEmployer } from "../../api/office";
 import SuccessModal from "../../components/Modal/SuccessModal";
-import EmployerDashboard from "./EmployerDashboard";
+import EmployerDashboard from "./Office/EmployerDashboard";
 
 const EmployerOffice = () => {
   const { token, user } = isAuthenticated();
