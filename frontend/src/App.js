@@ -13,6 +13,7 @@ import Signup from "./pages/UserPages/Signup";
 import EmployerOffice from "./pages/Employer/EmployerOffice";
 import EmployerSideRoom from "./pages/Employer/Room/EmployerSideRoom";
 import EmployeeDashboard from "./pages/Employee/EmployeeDashboard";
+import EmployeeSideRoom from "./pages/Employee/Rooms/EmployeeSideRoom";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/profile" exact component={Profile} />
           <Route path="/about" exact component={About} />
           <Route path="/employerRoom/:roomId" exact component={EmployerSideRoom} />
+          <Route path="/employeeRoom/:roomId" exact component={EmployeeSideRoom} />
         </Switch>
       </BrowserRouter>
     </>

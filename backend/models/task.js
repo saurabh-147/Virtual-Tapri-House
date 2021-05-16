@@ -17,8 +17,8 @@ const taskSchema = mongoose.Schema(
       ref: "User",
     },
     status: {
-      type: String,
-      default: "InComplete",
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

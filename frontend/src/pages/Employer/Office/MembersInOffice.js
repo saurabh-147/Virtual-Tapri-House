@@ -27,9 +27,9 @@ const MembersInOffice = () => {
 
   const preload = () => {
     getAllMembersInOffice(token).then((data) => {
+      console.log(data);
       if (data.success) {
         setMembers(data.members);
-        console.log(members);
       } else {
         alert(data.error);
       }

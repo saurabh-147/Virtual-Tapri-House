@@ -23,8 +23,6 @@ router.post("/createOffice", middleware, (req, res) => {
     .save()
     .then((office) => {
       User.findByIdAndUpdate(req.user._id, { haveOffice: true, haveofficeId: office._id }, { new: true }).then((user) => {
-        console.log(user);
-        console.log(office);
         return res.status(200).json({ success: true, message: "Woooo , Your Office is Created", user });
       });
     })
@@ -37,7 +35,6 @@ router.post("/createOffice", middleware, (req, res) => {
 router.get("/getNotificationForOffice", middleware, (req, res) => {
   if (req.user.offerToJoinOffice !== null) {
     Office.findById(req.user.offerToJoinOffice).then((office) => {
-      console.log(office);
       return res.status(200).json({ success: true, isPresent: true, office: { officeId: office._id, name: office.name } });
     });
   } else {
@@ -47,7 +44,6 @@ router.get("/getNotificationForOffice", middleware, (req, res) => {
 
 router.post("/acceptRequestToJoinOffice", middleware, (req, res) => {
   Office.findByIdAndUpdate(req.user.offerToJoinOffice, { $push: { memberInOffice: req.user._id } }).then((office) => {
-    console.log(office);
     User.findById(req.user._id).then((user) => {
       user.underOfficeId = req.user.offerToJoinOffice;
       user.offerToJoinOffice = null;
@@ -56,7 +52,6 @@ router.post("/acceptRequestToJoinOffice", middleware, (req, res) => {
       user
         .save()
         .then((user) => {
-          console.log(user);
           return res.status(200).json({ success: true, message: "You Are Succesfully Added To Office" });
         })
         .catch((err) => {
@@ -66,24 +61,37 @@ router.post("/acceptRequestToJoinOffice", middleware, (req, res) => {
   });
 });
 
-router.get("/getAllRoomsOfEmployee", middleware, (req, res) => {
-  return res.status(200).json({ rooms: req.user.userUnderOfficeRooms });
-});
-
-//Get All task assinged to given user in given room Id
-//TODO:
 //Not Sure that it is correct
 router.get("/getAlltaksOfEmployee/:roomId", middleware, (req, res) => {
-  console.log(req.user.userUnderOfficeRooms);
-
   Room.findById(req.params.roomId)
     .populate("tasks")
     .then((room) => {
-      console.log(room);
       const tasksAssingedToUser = room.tasks.filter((t) => {
-        return t.isAssigned && t.isAssignedTo === req.user._id;
+        return t.isAssigned && t.isAssignedTo.toString() === req.user._id.toString();
       });
-      return res.status(200).json({ tasks: tasksAssingedToUser });
+
+      const userRoomDetails = {
+        name: room.name,
+        description: room.description,
+        tasks: tasksAssingedToUser,
+      };
+
+      return res.status(200).json({ success: true, room: userRoomDetails });
+    });
+});
+
+router.post("/setTaskComplete/:taskId", middleware, (req, res) => {
+  console.log(req.params.taskId);
+  Task.findByIdAndUpdate(req.params.taskId, { $set: { status: true } }, { new: true })
+    .then((task, err) => {
+      if (err) {
+        console.log(err);
+      }
+      console.log("asnmdan", task);
+      res.status(200).json({ success: true, message: "Task is completed" });
+    })
+    .catch((err) => {
+      console.log(err);
     });
 });
 

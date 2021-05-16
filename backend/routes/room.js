@@ -65,7 +65,6 @@ router.post("/addTasks/:roomId", middleware, (req, res) => {
     .save()
     .then((task) => {
       Room.findByIdAndUpdate(req.params.roomId, { $push: { tasks: task._id } }).then((room) => {
-        console.log(room);
         return res.status(200).json({ success: true, message: "Task is succesfully added To Room" });
       });
     })
@@ -78,7 +77,6 @@ router.get("/displayAlltasks/:roomId", middleware, (req, res) => {
   Room.findById(req.params.roomId)
     .populate("tasks")
     .then((room) => {
-      console.log(room);
       return res.status(200).json({ success: true, room: room });
     })
     .catch((err) => {

@@ -5,8 +5,27 @@ const Office = require("../models/office");
 const Room = require("../models/room");
 const middleware = require("../middleware/userAuth");
 
+router.get("/officeDetailsForEmployee", middleware, (req, res) => {
+  Office.findById(req.user.underOfficeId)
+    .then((data) => {
+      return res.status(200).json({ success: true, officeDetails: data });
+    })
+    .catch((err) => {
+      console.log(er);
+    });
+});
+
+router.get("/officeDetailsForEmployer", middleware, (req, res) => {
+  Office.findById(req.user.haveofficeId)
+    .then((data) => {
+      return res.status(200).json({ success: true, officeDetails: data });
+    })
+    .catch((err) => {
+      console.log(er);
+    });
+});
+
 router.post("/addMembersToOffice", middleware, (req, res) => {
-  console.log(req.user.haveofficeId);
   const { email } = req.body;
 
   User.findOne({ email: email })
@@ -33,7 +52,6 @@ router.get("/getAllMembersInOffice", middleware, (req, res) => {
   Office.findById(req.user.haveofficeId)
     .populate("memberInOffice", "name email")
     .then((office) => {
-      console.log(office);
       return res.status(200).json({ success: true, members: office.memberInOffice });
     })
     .catch((err) => {
@@ -50,11 +68,8 @@ router.post("/createRoom", middleware, (req, res) => {
   });
 
   newRoom.save().then((room) => {
-    console.log(room);
-
     Office.findByIdAndUpdate(req.user.haveofficeId, { $push: { rooms: room._id } })
       .then((office) => {
-        console.log(office);
         return res.status(200).json({ success: true, message: "Room Is Created" });
       })
       .catch((err) => {
@@ -67,7 +82,6 @@ router.get("/getAllRoomsInOffice", middleware, (req, res) => {
   Office.findById(req.user.haveofficeId)
     .populate("rooms", "name description")
     .then((office) => {
-      console.log(office);
       return res.status(200).json({ success: true, officeRooms: office.rooms });
     })
     .catch((err) => {
