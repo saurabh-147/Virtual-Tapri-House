@@ -213,3 +213,17 @@ export const officeDetailsForEmployer = (token) => {
     })
     .catch((err) => console.log(err));
 };
+
+export const userDetailsOfTaskAssigned = (taskId) => {
+  return fetch(`/userDetailsOfTaskAssigned/${taskId}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};

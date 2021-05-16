@@ -43,8 +43,8 @@ const EmployerDashboard = () => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <Typography variant="h5">Office Name - {officeDetails.name}</Typography>
-            <Typography variant="subtitle1">Description - {officeDetails.description}</Typography>
+            <Typography variant="h5">Office Name - {officeDetails?.name}</Typography>
+            <Typography variant="subtitle1">Description - {officeDetails?.description}</Typography>
           </Paper>
         </Grid>
       </Grid>

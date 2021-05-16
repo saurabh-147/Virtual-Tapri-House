@@ -62,8 +62,8 @@ const EmployeeDashboard = () => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Paper className={classes.paper} style={{ color: "white", background: "black" }}>
-            <Typography variant="h5">Office Name - {offDetails.name}</Typography>
-            <Typography variant="subtitle1">Description - {offDetails.description}</Typography>
+            <Typography variant="h5">Office Name - {offDetails?.name}</Typography>
+            <Typography variant="subtitle1">Description - {offDetails?.description}</Typography>
           </Paper>
         </Grid>
       </Grid>

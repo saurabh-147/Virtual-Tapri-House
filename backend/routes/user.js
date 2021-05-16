@@ -95,4 +95,15 @@ router.post("/setTaskComplete/:taskId", middleware, (req, res) => {
     });
 });
 
+router.get("/userDetailsOfTaskAssigned/:taskId", (req, res) => {
+  Task.findById(req.params.taskId)
+    .populate("isAssignedTo", "name")
+    .then((task) => {
+      res.status(200).json({ success: true, tasksAssingedToUser: task.isAssignedTo.name });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 module.exports = router;
