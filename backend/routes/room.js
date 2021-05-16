@@ -42,7 +42,7 @@ router.post("/addMembersToRoom/:roomId", middleware, (req, res) => {
 router.get("/getAllMembersOfRoom/:roomId", middleware, (req, res) => {
   const roomId = req.params.roomId;
   Room.findById(roomId)
-    .populate("membersInRoom")
+    .populate("membersInRoom", "name email")
     .then((room) => {
       return res.status(200).json({
         success: true,
@@ -88,16 +88,17 @@ router.get("/displayAlltasks/:roomId", middleware, (req, res) => {
 
 router.post("/assignTask/:taskId", middleware, (req, res) => {
   const { userId } = req.body;
+
   Task.findById(req.params.taskId)
     .then((task) => {
       if (task.isAssigned === false) {
         task.isAssigned = true;
         task.isAssignedTo = userId;
         task.save().then((task) => {
-          return res.status(200).json({ message: "Task assigned to user" });
+          return res.status(200).json({ success: true, message: "Task assigned to user" });
         });
       } else {
-        return res.status(200).json({ message: "Task is already assigned" });
+        return res.status(200).json({ success: false, message: "Task is already assigned" });
       }
     })
     .catch((err) => {

@@ -43,7 +43,7 @@ const MembersInOffice = () => {
   const addMember = () => {
     addMemberInOffice(emailId, token).then((data) => {
       if (data.success) {
-        console.log(data.message);
+        alert(data.message);
       } else {
         alert(data.error);
       }
@@ -64,9 +64,9 @@ const MembersInOffice = () => {
       </Form>
       <Grid container>
         <Grid item xs>
-          {members.map((item) => {
+          {members.map((item, index) => {
             return (
-              <Paper className={classes.paper}>
+              <Paper key={index} className={classes.paper}>
                 <TiIcons.TiUser />
                 &nbsp; {item.name}
                 <br />

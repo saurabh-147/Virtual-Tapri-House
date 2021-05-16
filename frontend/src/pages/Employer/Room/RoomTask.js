@@ -9,9 +9,9 @@ import { addTasksInRoom, getAllTaskOfRoom } from "../../../api/office";
 import { useParams } from "react-router-dom";
 import Task from "./Task";
 
-const RoomTask = () => {
+const RoomTask = ({ roomId }) => {
   const { token } = isAuthenticated();
-  const { roomId } = useParams();
+
   const [taskModal, setTaskModal] = useState(false);
 
   const [values, setValues] = useState({

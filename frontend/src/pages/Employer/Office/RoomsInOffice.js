@@ -119,9 +119,9 @@ const RoomsInOffice = () => {
       </Form>
       <Grid container>
         <Grid item xs>
-          {roomsInOffice.map((item) => {
+          {roomsInOffice.map((item, index) => {
             return (
-              <Paper className={classes.paper}>
+              <Paper key={index} className={classes.paper}>
                 <TiIcons.TiUser />
                 &nbsp; {item.name}
                 <br />

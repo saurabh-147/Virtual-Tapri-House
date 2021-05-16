@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -39,11 +39,10 @@ const EmployerSideRoom = () => {
   const [members, setMembers] = useState([]);
   const [roomMembers, setRoomMembers] = useState([]);
 
-  const preload1 = async () => {
-    getAllMembersInOffice(token).then(async (data) => {
+  const preload1 = () => {
+    getAllMembersInOffice(token).then((data) => {
       if (data.success) {
-        await setMembers(data.members);
-        await preload2();
+        setMembers(data.members);
       } else {
         alert(data.error);
       }
@@ -53,12 +52,16 @@ const EmployerSideRoom = () => {
     membersInRoom(token, roomId).then((data) => {
       if (data.success) {
         setRoomMembers(data.membersInRoom);
-        console.log(members);
-        var leftMembers = members.filter(function (val) {
-          return roomMembers.indexOf(val) == -1;
-        });
-        console.log(leftMembers);
 
+        var leftMembers = members.filter((val) => {
+          let flag = 0;
+
+          data.membersInRoom.map((item) => {
+            if (item._id === val._id) flag = 1;
+          });
+
+          if (flag === 0) return val;
+        });
         setMembers(leftMembers);
       } else {
         alert(data.error);
@@ -71,6 +74,12 @@ const EmployerSideRoom = () => {
       preload1();
     }
   }, []);
+
+  useLayoutEffect(() => {
+    if (members.length !== 0 && roomMembers.length === 0) {
+      preload2();
+    }
+  }, [members]);
 
   const addUserToRoom = (userId) => {
     addMembersToRoom(token, roomId, userId).then((data) => {
@@ -125,7 +134,7 @@ const EmployerSideRoom = () => {
           <Grid container>
             <Grid>
               {roomMembers.map((item, index) => (
-                <UserInRoom roomMember={item} />
+                <UserInRoom key={index} roomMember={item} />
               ))}
             </Grid>
           </Grid>
@@ -138,7 +147,7 @@ const EmployerSideRoom = () => {
     return (
       <Grid item md={9} xs={12}>
         <Paper className={classes.paper}>
-          <RoomTask />
+          <RoomTask roomId={roomId} />
         </Paper>
       </Grid>
     );

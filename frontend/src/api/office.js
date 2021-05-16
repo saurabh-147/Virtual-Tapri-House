@@ -136,3 +136,19 @@ export const getAllTaskOfRoom = (token, roomId) => {
     })
     .catch((err) => console.log(err));
 };
+
+export const assignTaskToUser = (token, taskId, userId) => {
+  return fetch(`/assignTask/${taskId}`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ userId }),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};

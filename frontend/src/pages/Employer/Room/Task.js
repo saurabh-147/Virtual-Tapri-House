@@ -14,16 +14,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const selectBackgroundColor = (isActive, canDrop) => {
-  if (isActive) {
-    return "darkgreen";
-  } else if (canDrop) {
-    return "darkkhaki";
-  } else {
-    return "#222";
-  }
-};
-
 const Task = ({ task, isAssigned }) => {
   const classes = useStyles();
 
@@ -31,7 +21,7 @@ const Task = ({ task, isAssigned }) => {
     () => ({
       accept: "BOX",
       drop: () => ({
-        name: `${isAssigned} task`,
+        name: `${task.name}`,
         task: `${task._id}`,
         isAssigned,
       }),
@@ -40,14 +30,11 @@ const Task = ({ task, isAssigned }) => {
         canDrop: monitor.canDrop(),
       }),
     }),
-    [isAssigned]
+    [task]
   );
 
-  const isActive = canDrop && isOver;
-  const backgroundColor = selectBackgroundColor(isActive, canDrop);
-
   return (
-    <Paper className={classes.paper} ref={drop}>
+    <Paper className={classes.paper} ref={drop} style={{ background: isAssigned ? "rgb(207,53,46)" : "#8a2be2" }}>
       <Typography align="center" variant="h5">
         {task.name}
       </Typography>
