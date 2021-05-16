@@ -10,6 +10,8 @@ import { Button } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import * as TiIcons from "react-icons/ti";
 import RoomTask from "./RoomTask";
+import UserInRoom from "./UserInRoom";
+
 import { DndProvider, useDrag } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -80,34 +82,6 @@ const EmployerSideRoom = () => {
     });
   };
 
-  const MovableUserInRoom = () => {
-    const [{ isDragging }, drag] = useDrag({
-      type: "Irrelevant, for now'",
-
-      collect: (monitor) => ({
-        isDragging: monitor.isDragging(),
-      }),
-    });
-
-    const opacity = isDragging ? 0.4 : 1;
-
-    return (
-      <>
-        {roomMembers.map((item, index) => {
-          return (
-            <Paper key={index} className={classes.paper2} ref={drag} style={{ opacity }}>
-              <TiIcons.TiUser />
-              &nbsp; {item.name}
-              <br />
-              &nbsp; &nbsp; &nbsp; {item.email}
-              <br />
-            </Paper>
-          );
-        })}
-      </>
-    );
-  };
-
   const membersPanel = () => {
     return (
       <Grid item xs>
@@ -150,7 +124,9 @@ const EmployerSideRoom = () => {
           </Typography>
           <Grid container>
             <Grid>
-              <MovableUserInRoom />
+              {roomMembers.map((item, index) => (
+                <UserInRoom roomMember={item} />
+              ))}
             </Grid>
           </Grid>
         </Paper>
@@ -179,8 +155,10 @@ const EmployerSideRoom = () => {
         </Grid>
       </Grid>
       <Grid container spacing={3}>
-        <DndProvider backend={HTML5Backend}>{membersPanel()}</DndProvider>
-        <DndProvider backend={HTML5Backend}>{TaskPanel()}</DndProvider>
+        <DndProvider backend={HTML5Backend}>
+          {membersPanel()}
+          {TaskPanel()}
+        </DndProvider>
       </Grid>
     </>
   );
