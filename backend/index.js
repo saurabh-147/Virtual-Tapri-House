@@ -39,8 +39,6 @@ app.use(cors());
 app.use(cookieParser());
 
 io.on("connection", (socket) => {
-  console.log("we have a conection");
-
   socket.on("join", async ({ chatId, userId }, callback) => {
     var messages = [];
     await getAllMessage(chatId).then((data) => {
@@ -52,12 +50,6 @@ io.on("connection", (socket) => {
     });
 
     socket.join(chatId);
-
-    //admin genrated message
-    socket.broadcast.to(chatId).emit("message", {
-      user: "admin",
-      text: `${username} is now live`,
-    });
 
     callback(messages);
   });
@@ -75,7 +67,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("user has left ,Page Reload");
+    console.log("User has left the meeting ,Page Reload");
   });
 });
 
