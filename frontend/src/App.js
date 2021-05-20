@@ -14,6 +14,7 @@ import EmployerOffice from "./pages/Employer/EmployerOffice";
 import EmployerSideRoom from "./pages/Employer/Room/EmployerSideRoom";
 import EmployeeDashboard from "./pages/Employee/EmployeeDashboard";
 import EmployeeSideRoom from "./pages/Employee/Rooms/EmployeeSideRoom";
+import Chat from "./pages/Chat/Chat";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/about" exact component={About} />
           <Route path="/employerRoom/:roomId" exact component={EmployerSideRoom} />
           <Route path="/employeeRoom/:roomId" exact component={EmployeeSideRoom} />
+          <Route path="/Chat" exact component={Chat} />
         </Switch>
       </BrowserRouter>
     </>

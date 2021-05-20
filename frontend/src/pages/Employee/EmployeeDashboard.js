@@ -9,6 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { Link } from "react-router-dom";
 import { officeDetailsForEmployee, officeDetailsForEmployer } from "../../api/office";
+import * as BsIcons from "react-icons/bs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,6 +68,9 @@ const EmployeeDashboard = () => {
           </Paper>
         </Grid>
       </Grid>
+      <Button as={Link} to={`/Chat?chatId=${user?.userChatId}&userId=${user?._id}`}>
+        <BsIcons.BsChatDots />
+      </Button>
       <Grid container spacing={3}>
         {/* Show Rooms */}
         <Grid item xs>

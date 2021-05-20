@@ -6,6 +6,8 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { isAuthenticated } from "../../../api/auth";
 import * as TiIcons from "react-icons/ti";
+import * as BsIcons from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MembersInOffice = () => {
   const classes = useStyles();
-  const { token } = isAuthenticated();
+  const { token, user } = isAuthenticated();
 
   const [emailId, setEmailId] = useState("");
   const [members, setMembers] = useState([]);
@@ -67,10 +69,21 @@ const MembersInOffice = () => {
           {members.map((item, index) => {
             return (
               <Paper key={index} className={classes.paper}>
-                <TiIcons.TiUser />
-                &nbsp; {item.name}
-                <br />
-                &nbsp; &nbsp; &nbsp; {item.email}
+                <Grid container spacing={2}>
+                  <Grid item>
+                    <TiIcons.TiUser />
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    {item?.userId?.name}
+                    <br />
+                    {item?.userId?.email}
+                  </Grid>
+                  <Grid item>
+                    <Button as={Link} to={`/Chat?chatId=${item.chatId}&userId=${user._id}`}>
+                      <BsIcons.BsChatDots />
+                    </Button>
+                  </Grid>
+                </Grid>
               </Paper>
             );
           })}
