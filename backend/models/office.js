@@ -9,8 +9,14 @@ const officeSchema = mongoose.Schema({
   },
   memberInOffice: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      chatId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Chat",
+      },
     },
   ],
   rooms: [

@@ -5,7 +5,8 @@ const Office = require("../models/office");
 const Room = require("../models/room");
 const Task = require("../models/task");
 const middleware = require("../middleware/userAuth");
-const office = require("../models/office");
+
+const Chat = require("../models/chat");
 
 router.get("/userInfo", middleware, (req, res) => {
   return res.status(200).json({ success: true, user: req.user });
@@ -43,11 +44,20 @@ router.get("/getNotificationForOffice", middleware, (req, res) => {
 });
 
 router.post("/acceptRequestToJoinOffice", middleware, (req, res) => {
-  Office.findByIdAndUpdate(req.user.offerToJoinOffice, { $push: { memberInOffice: req.user._id } }).then((office) => {
+  const chat = new Chat({});
+  chat.save();
+
+  const obj = {
+    userId: req.user._id,
+    chatId: chat._id,
+  };
+
+  Office.findByIdAndUpdate(req.user.offerToJoinOffice, { $push: { memberInOffice: obj } }).then((office) => {
     User.findById(req.user._id).then((user) => {
       user.underOfficeId = req.user.offerToJoinOffice;
       user.offerToJoinOffice = null;
       user.underOffice = true;
+      user.userChatId = chat._id;
 
       user
         .save()

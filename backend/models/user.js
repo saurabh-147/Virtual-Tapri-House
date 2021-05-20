@@ -29,6 +29,10 @@ const userSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Office",
   },
+  userChatId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Chat",
+  },
   offerToJoinOffice: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Office",

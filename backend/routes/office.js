@@ -50,7 +50,7 @@ router.post("/addMembersToOffice", middleware, (req, res) => {
 
 router.get("/getAllMembersInOffice", middleware, (req, res) => {
   Office.findById(req.user.haveofficeId)
-    .populate("memberInOffice", "name email")
+    .populate("memberInOffice.userId", "name email")
     .then((office) => {
       return res.status(200).json({ success: true, members: office.memberInOffice });
     })
