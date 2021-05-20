@@ -38,9 +38,10 @@ const EmployerSideRoom = () => {
 
   const [members, setMembers] = useState([]);
   const [roomMembers, setRoomMembers] = useState([]);
-
+  const [preloadRoomData, setPreloadRoomData] = useState(true);
   const preload1 = () => {
     getAllMembersInOffice(token).then((data) => {
+      console.log(data);
       if (data.success) {
         setMembers(data.members);
       } else {
@@ -79,11 +80,13 @@ const EmployerSideRoom = () => {
     if (members.length !== 0 && roomMembers.length === 0) {
       preload2();
     }
-  }, [members]);
+  }, [members, preloadRoomData]);
 
   const addUserToRoom = (userId) => {
     addMembersToRoom(token, roomId, userId).then((data) => {
+      console.log(data);
       if (data.success) {
+        setPreloadRoomData((prev) => !prev);
         alert(data.message);
       } else {
         alert(data.error);
@@ -106,15 +109,15 @@ const EmployerSideRoom = () => {
                     <TiIcons.TiUser />
                     <Grid container direction="row" justify="space-between" alignItems="center">
                       <Grid item>
-                        {item.name}
+                        {item.userId.name}
                         <br />
-                        {item.email}
+                        {item.userId.email}
                       </Grid>
                       <Grid item>
                         <Button
                           variant="primary"
                           onClick={() => {
-                            addUserToRoom(item._id);
+                            addUserToRoom(item.userId._id);
                           }}
                         >
                           <PersonAddIcon />

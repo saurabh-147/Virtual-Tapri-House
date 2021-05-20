@@ -28,7 +28,7 @@ const findColor = (isAssigned, status) => {
   }
 };
 
-const Task = ({ task, isAssigned }) => {
+const Task = ({ task, isAssigned, setPreloadData }) => {
   const classes = useStyles();
   const [name, setName] = useState("");
 
@@ -60,7 +60,7 @@ const Task = ({ task, isAssigned }) => {
     if (isAssigned) {
       preload();
     }
-  }, []);
+  }, [setPreloadData]);
 
   const color = findColor(isAssigned, task.status);
 

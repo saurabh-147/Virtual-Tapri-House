@@ -20,6 +20,7 @@ const RoomTask = ({ roomId }) => {
   });
 
   const [tasksInRoom, setTasksInRoom] = useState([]);
+  const [preloadData, setPreloadData] = useState(true);
 
   const handleClose = () => {
     setTaskModal(false);
@@ -64,7 +65,6 @@ const RoomTask = ({ roomId }) => {
   const addTaskToRoom = () => {
     addTasksInRoom(token, roomId, values).then((data) => {
       if (data.success) {
-        alert(data.message);
         setTaskModal(false);
         setValues(() => {
           return {
@@ -72,6 +72,7 @@ const RoomTask = ({ roomId }) => {
             description: "",
           };
         });
+        setPreloadData((prev) => !prev);
       } else {
         console.log(data.error);
       }
@@ -89,7 +90,7 @@ const RoomTask = ({ roomId }) => {
 
   useEffect(() => {
     preload();
-  }, []);
+  }, [preloadData]);
 
   return (
     <>
@@ -109,7 +110,7 @@ const RoomTask = ({ roomId }) => {
         {tasksInRoom.map((item, index) => {
           return (
             <Grid key={index} item md={6} xs={12}>
-              <Task task={item} isAssigned={item.isAssigned} />
+              <Task task={item} isAssigned={item.isAssigned} setPreloadData={setPreloadData} />
             </Grid>
           );
         })}

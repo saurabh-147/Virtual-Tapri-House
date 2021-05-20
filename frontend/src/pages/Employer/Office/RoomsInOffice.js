@@ -30,6 +30,7 @@ const RoomsInOffice = () => {
     name: "",
     description: "",
   });
+  const [preloadData, setPreloadData] = useState(true);
 
   const [roomsInOffice, setRoomsInOffice] = useState([]);
 
@@ -77,7 +78,6 @@ const RoomsInOffice = () => {
   const roomAddToOffice = () => {
     AddroomToOffice(values, token).then((data) => {
       if (data.success) {
-        alert(data.message);
         setRoomModal(false);
         setValues(() => {
           return {
@@ -85,6 +85,7 @@ const RoomsInOffice = () => {
             description: "",
           };
         });
+        setPreloadData((prev) => !prev);
       } else {
         console.log(data.error);
       }
@@ -102,7 +103,7 @@ const RoomsInOffice = () => {
 
   useEffect(() => {
     preload();
-  }, []);
+  }, [preloadData]);
 
   return (
     <>

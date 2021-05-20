@@ -7,6 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import queryString from "query-string";
+import ScrollToBottom from "react-scroll-to-bottom";
 
 let socket;
 
@@ -38,7 +39,7 @@ const Chat = ({ location }) => {
 
   const ENDPOINT = "http://localhost:7000";
 
-  useEffect(() => {
+  useEffect(async () => {
     const { chatId, userId } = queryString.parse(location.search);
 
     setChatId(chatId);
@@ -49,9 +50,8 @@ const Chat = ({ location }) => {
     });
 
     socket.emit("join", { chatId, userId }, (response) => {
-      //over here we are retrieving previous messages
-      console.log(response);
-      setMessages(response);
+      //over here we are retrieving previous message
+      setMessages((prev) => [...prev, ...response]);
     });
 
     return () => {
@@ -61,15 +61,17 @@ const Chat = ({ location }) => {
   }, [ENDPOINT]);
 
   const updateMessages = (message) => {
+    console.log(messages);
     let newMessages = messages;
     newMessages.push(message);
     setMessages(newMessages);
     console.log(messages);
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     socket.on("message", (message) => {
-      updateMessages(message);
+      setMessages((prev) => [...prev, message]);
+      // updateMessages(message);
     });
   }, []);
 
@@ -94,17 +96,19 @@ const Chat = ({ location }) => {
       <Grid container direction="row" justify="center" alignItems="center">
         <Grid item md={6} xs={12}>
           <Paper className={classes.paper}>
-            {messages.map((item) => {
+            {messages.map((item, index) => {
               return userId == item.userId ? (
-                <Grid container direction="row" justify="flex-end" spacing={2}>
+                <Grid key={index} container direction="row" justify="flex-end" spacing={2}>
                   <Grid item xs={5}>
                     <Paper className={classes.message}>{item.content}</Paper>
                   </Grid>
                 </Grid>
               ) : (
-                <Grid container direction="row" justify="flex-start">
+                <Grid key={index} container direction="row" justify="flex-start" spacing={2}>
                   <Grid item xs={5}>
-                    <Paper className={classes.message}>Someone Else</Paper>
+                    <Paper style={{ background: "#cea2fd", color: "white" }} className={classes.message}>
+                      {item.content}
+                    </Paper>
                   </Grid>
                 </Grid>
               );

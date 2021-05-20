@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import { isAuthenticated } from "../../api/auth";
 import { getNotificationsforJoin, acceptRequestToJoinOffice, userInfo } from "../../api/user";
 import SuccessModal from "../../components/Modal/SuccessModal";
-
+import Footer from "./Footer";
 const Home = () => {
   const [notification, setNotification] = useState(false);
   const [companyDetails, setCompanyDetails] = useState("");
@@ -92,12 +92,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="home_section3">
-          <div className="home_section3_text">
-            <h1 className="sec3_home_heading">Just Meet</h1>
-            <p className="home_txt">Recreate Your Physical Classroom In The Cloud</p>
-          </div>
-        </div>
+        <Footer />
       </div>
       <SuccessModal openModal={notification} content="You Have a Invite for joining a Company ,  Join the Company Just By Clicking the Below Button" childrenButtons={joinButton} />
     </>
