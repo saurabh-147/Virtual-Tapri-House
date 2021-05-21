@@ -10,6 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import { Link } from "react-router-dom";
 import { officeDetailsForEmployee, officeDetailsForEmployer } from "../../api/office";
 import * as BsIcons from "react-icons/bs";
+import ModalForm from "../../components/Modal/ModalForm";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,6 +59,16 @@ const EmployeeDashboard = () => {
     checkIfUserIsInOffice();
   }, []);
 
+  const goBackButton = () => {
+    return (
+      <>
+        <Button as={Link} variant="danger" to="/">
+          Back
+        </Button>
+      </>
+    );
+  };
+
   return (
     <>
       <Grid container spacing={3}>
@@ -68,7 +79,7 @@ const EmployeeDashboard = () => {
           </Paper>
         </Grid>
       </Grid>
-      <Button as={Link} to={`/Chat?chatId=${user?.userChatId}&userId=${user?._id}`}>
+      <Button style={{ marginLeft: "20px" }} as={Link} to={`/Chat?chatId=${user?.userChatId}&userId=${user?._id}`}>
         <BsIcons.BsChatDots />
       </Button>
       <Grid container spacing={3}>
@@ -93,6 +104,13 @@ const EmployeeDashboard = () => {
             })}
         </Grid>
       </Grid>
+      <ModalForm
+        openModal={openModal}
+        title="Employee Message"
+        content="Sorry , You Are Not Present In Any Office , Ask Your Employer To Send Request To Join Office"
+        children={() => {}}
+        childrenButtons={goBackButton}
+      />
     </>
   );
 };

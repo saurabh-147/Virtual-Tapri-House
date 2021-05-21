@@ -89,7 +89,7 @@ const Chat = ({ location }) => {
       <Grid container direction="row" justify="center" alignItems="center">
         <Grid item md={6} xs={12}>
           <Paper style={{ background: "blueviolet", color: "white" }} className={classes.paper}>
-            Parle-Moi
+            Bavarder Avec
           </Paper>
         </Grid>
       </Grid>

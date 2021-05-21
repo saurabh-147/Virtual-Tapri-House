@@ -21,6 +21,7 @@ const User = () => {
   const handleLogout = () => {
     setAnchorEl(null);
     signout();
+    window.location.reload();
   };
   return (
     <>

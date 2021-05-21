@@ -27,6 +27,7 @@ const Login = () => {
       if (data.success) {
         authenticate(data.data, () => {
           setDidRedirect(true);
+          window.location.reload();
         });
       } else {
         alert(data.error);
