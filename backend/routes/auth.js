@@ -46,6 +46,45 @@ router.post(
   }
 );
 
+router.post(
+  "/registerAndJoinOffice",
+  [
+    check("name", "name field is required").isLength({ min: 1 }),
+    check("email", "email is required").isEmail(),
+    check("password", "password should be at least 6 character ").isLength({ min: 6 }),
+  ],
+  (req, res) => {
+    const { name, email, password } = req.body;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        success: false,
+        error: errors.array()[0].msg,
+      });
+    }
+
+    User.findOne({ email: email }).then(async (user) => {
+      if (user) return res.status(422).json({ success: false, error: "User Already Exists" });
+
+      let hashPassword = await bcrypt.hash(password, 12);
+
+      const newUser = new User({
+        email,
+        password: hashPassword,
+        name,
+      });
+      newUser
+        .save()
+        .then((user) => {
+          return res.status(200).json({ success: true, message: "User Saved Succesfully" });
+        })
+        .catch((err) => {
+          return res.status(400).json(err);
+        });
+    });
+  }
+);
 router.post("/login", [check("email", "email is required").isEmail(), check("password", "password field is required").isLength({ min: 1 })], (req, res) => {
   const { email, password } = req.body;
 

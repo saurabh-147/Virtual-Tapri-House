@@ -4,11 +4,12 @@ import { Button, Form } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import * as TiIcons from "react-icons/ti";
 import RoomModal from "../../../components/Modal/RoomModal";
 import { AddroomToOffice, getAllRoomsInOffice } from "../../../api/office";
 import { isAuthenticated } from "../../../api/auth";
+import * as BiIcons from "react-icons/bi";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +25,8 @@ const useStyles = makeStyles((theme) => ({
 const RoomsInOffice = () => {
   const classes = useStyles();
   const { token } = isAuthenticated();
+  let history = useHistory();
+
   const [roomModal, setRoomModal] = useState(false);
 
   const [values, setValues] = useState({
@@ -53,7 +56,7 @@ const RoomsInOffice = () => {
       <>
         <Form>
           <Form.Group controlId="exampleForm.ControlInput1">
-            <Form.Label>Office Name</Form.Label>
+            <Form.Label>Room Name</Form.Label>
             <Form.Control type="text" value={values.name} name="name" onChange={handleChange} />
           </Form.Group>
 

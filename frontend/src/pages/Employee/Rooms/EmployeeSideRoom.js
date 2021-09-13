@@ -6,6 +6,9 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { useParams } from "react-router";
+import { Link, useHistory } from "react-router-dom";
+import * as BiIcons from "react-icons/bi";
+
 import { getAlltaksOfEmployee, setTaskComplete } from "../../../api/office";
 import { isAuthenticated } from "../../../api/auth";
 
@@ -23,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
 const EmployeeSideRoom = () => {
   const classes = useStyles();
   const { roomId } = useParams();
+  let history = useHistory();
+
   const [employeeRoom, setEmployeeRoom] = useState([]);
   const { token } = isAuthenticated();
 
@@ -53,6 +58,15 @@ const EmployeeSideRoom = () => {
 
   return (
     <>
+      <Grid container direction="row" justify="center" alignItems="center">
+        <Grid item xs={12}>
+          <Paper style={{ background: "blueviolet", color: "white" }} className={classes.paper}>
+            <Button onClick={() => history.push("/joinAsEmployee")}>
+              <BiIcons.BiArrowBack />
+            </Button>
+          </Paper>
+        </Grid>
+      </Grid>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Paper className={classes.paper} style={{ color: "white", background: "black" }}>

@@ -7,6 +7,9 @@ import MembersInOffice from "./MembersInOffice";
 import { officeDetailsForEmployer } from "../../../api/office";
 import { isAuthenticated } from "../../../api/auth";
 import Typography from "@material-ui/core/Typography";
+import { useHistory } from "react-router-dom";
+import { Button } from "@material-ui/core";
+import * as BiIcons from "react-icons/bi";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 const EmployerDashboard = () => {
   const classes = useStyles();
   const { token } = isAuthenticated();
+  let history = useHistory();
   const [officeDetails, setofficeDetails] = useState();
 
   const preload = () => {
@@ -40,11 +44,20 @@ const EmployerDashboard = () => {
 
   return (
     <>
+      <Grid container direction="row" justify="center" alignItems="center">
+        <Grid item xs={12}>
+          <Paper style={{ background: "blueviolet", color: "white" }} className={classes.paper}>
+            <Button onClick={() => history.push("/")}>
+              <BiIcons.BiArrowBack />
+            </Button>
+          </Paper>
+        </Grid>
+      </Grid>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <Typography variant="h5">Office Name - {officeDetails?.name}</Typography>
-            <Typography variant="subtitle1">Description - {officeDetails?.description}</Typography>
+          <Paper className={classes.paper} style={{ color: "white", background: "black" }}>
+            <Typography variant="h5">{officeDetails?.name}</Typography>
+            <Typography variant="subtitle1">{officeDetails?.description}</Typography>
           </Paper>
         </Grid>
       </Grid>

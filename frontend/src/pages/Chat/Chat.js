@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import queryString from "query-string";
 import ScrollToBottom from "react-scroll-to-bottom";
+import * as BiIcons from "react-icons/bi";
 
 let socket;
 
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Chat = ({ location }) => {
   const classes = useStyles();
-
+  let history = useHistory();
   const [chatId, setChatId] = useState(null);
   const [userId, setUserId] = useState(null);
 
@@ -89,7 +90,16 @@ const Chat = ({ location }) => {
       <Grid container direction="row" justify="center" alignItems="center">
         <Grid item md={6} xs={12}>
           <Paper style={{ background: "blueviolet", color: "white" }} className={classes.paper}>
-            Bavarder Avec
+            <Button onClick={() => history.push("/joinAsEmployee")}>
+              <BiIcons.BiArrowBack />
+            </Button>
+          </Paper>
+        </Grid>
+      </Grid>
+      <Grid container direction="row" justify="center" alignItems="center">
+        <Grid item md={6} xs={12}>
+          <Paper style={{ background: "blueviolet", color: "white" }} className={classes.paper}>
+            Connect with Peers
           </Paper>
         </Grid>
       </Grid>

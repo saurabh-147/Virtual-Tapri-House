@@ -7,10 +7,11 @@ import Typography from "@material-ui/core/Typography";
 import { isAuthenticated } from "../../api/auth";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { officeDetailsForEmployee, officeDetailsForEmployer } from "../../api/office";
 import * as BsIcons from "react-icons/bs";
 import ModalForm from "../../components/Modal/ModalForm";
+import * as BiIcons from "react-icons/bi";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
 
 const EmployeeDashboard = () => {
   const classes = useStyles();
+  let history = useHistory();
+
   const { token } = isAuthenticated();
   const [openModal, setOpenModal] = useState(false);
   const [user, setUser] = useState(null);
@@ -71,39 +74,51 @@ const EmployeeDashboard = () => {
 
   return (
     <>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper} style={{ color: "white", background: "black" }}>
-            <Typography variant="h5">Office Name - {offDetails?.name}</Typography>
-            <Typography variant="subtitle1">Description - {offDetails?.description}</Typography>
-          </Paper>
-        </Grid>
-      </Grid>
-      <Button style={{ marginLeft: "20px" }} as={Link} to={`/Chat?chatId=${user?.userChatId}&userId=${user?._id}`}>
-        <BsIcons.BsChatDots />
-      </Button>
-      <Grid container spacing={3}>
-        {/* Show Rooms */}
-        <Grid item xs>
-          {user &&
-            user.userUnderOfficeRooms.map((item, index) => {
-              return (
-                <Paper className={classes.paper} key={index}>
-                  <Grid container>
-                    <Grid item xs>
-                      <Typography variant="h6">Room Name - {item.name}</Typography>
-                      <Typography variant="subtitle2">Description - {item.description}</Typography>
+      {!openModal && (
+        <>
+          <Grid container direction="row" justify="center" alignItems="center">
+            <Grid item xs={12}>
+              <Paper style={{ background: "blueviolet", color: "white" }} className={classes.paper}>
+                <Button onClick={() => history.push("/")}>
+                  <BiIcons.BiArrowBack />
+                </Button>
+              </Paper>
+            </Grid>
+          </Grid>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Paper className={classes.paper} style={{ color: "white", background: "black" }}>
+                <Typography variant="h5">{offDetails?.name}</Typography>
+                <Typography variant="subtitle1"> {offDetails?.description}</Typography>
+              </Paper>
+            </Grid>
+          </Grid>
+          <Button style={{ marginLeft: "20px" }} as={Link} to={`/Chat?chatId=${user?.userChatId}&userId=${user?._id}`}>
+            <BsIcons.BsChatDots />
+          </Button>
+          <Grid container spacing={3}>
+            <Grid item xs>
+              {user &&
+                user.userUnderOfficeRooms.map((item, index) => {
+                  return (
+                    <Paper className={classes.paper} key={index}>
+                      <Grid container>
+                        <Grid item xs>
+                          <Typography variant="h6"> {item.name}</Typography>
+                          <Typography variant="subtitle2"> {item.description}</Typography>
 
-                      <Button as={Link} to={`/employeeRoom/${item.roomId}`}>
-                        View
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Paper>
-              );
-            })}
-        </Grid>
-      </Grid>
+                          <Button as={Link} to={`/employeeRoom/${item.roomId}`}>
+                            View
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </Paper>
+                  );
+                })}
+            </Grid>
+          </Grid>
+        </>
+      )}
       <ModalForm
         openModal={openModal}
         title="Employee Message"

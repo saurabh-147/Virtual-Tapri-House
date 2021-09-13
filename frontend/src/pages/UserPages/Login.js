@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+
 import { authenticate, login } from "../../api/auth";
+import { Checkbox, Grid, FormControlLabel, Paper, Button } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 
 const Login = () => {
@@ -40,27 +41,32 @@ const Login = () => {
       return <Redirect to="/" />;
     }
   };
+  const formPage = () => {
+    return (
+      <div style={{ marginLeft: 400, marginRight: 400, marginTop: 50 }}>
+        <Paper>
+          <Grid container spacing={3} direction={"column"} justify={"center"} alignItems={"center"}>
+            <Grid item>
+              <TextField label="Email" name="email" value={values.email} onChange={handleChange}></TextField>
+            </Grid>
+            <Grid item>
+              <TextField label="Password" type={"password"} name="password" value={values.password} onChange={handleChange}></TextField>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Button variant="contained" color="primary" onClick={onSubmit}>
+                Login
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+      </div>
+    );
+  };
 
   return (
-    <div className="login">
-      <form noValidate autoComplete="off">
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", height: "50vh" }}>
-          <TextField id="outlined-basic" label="Email" variant="outlined" name="email" value={values.email} onChange={handleChange} />
-          <TextField
-            id="outlined-password-input"
-            label="Password"
-            type="password"
-            autoComplete="current-password"
-            variant="outlined"
-            name="password"
-            value={values.password}
-            onChange={handleChange}
-          />
-          <Button variant="contained" color="primary" onClick={onSubmit}>
-            Login
-          </Button>
-        </div>
-      </form>
+    <div>
+      {formPage()}
       {redirectToLoginPage()}
     </div>
   );

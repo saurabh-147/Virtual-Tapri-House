@@ -7,10 +7,11 @@ import { addMembersToRoom, getAllMembersInOffice, membersInRoom } from "../../..
 import { isAuthenticated } from "../../../api/auth";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import { Button } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import * as TiIcons from "react-icons/ti";
 import RoomTask from "./RoomTask";
 import UserInRoom from "./UserInRoom";
+import * as BiIcons from "react-icons/bi";
 
 import { DndProvider, useDrag } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -35,6 +36,7 @@ const EmployerSideRoom = () => {
   const classes = useStyles();
   const { token } = isAuthenticated();
   const { roomId } = useParams();
+  let history = useHistory();
 
   const [members, setMembers] = useState([]);
   const [roomMembers, setRoomMembers] = useState([]);
@@ -158,14 +160,23 @@ const EmployerSideRoom = () => {
 
   return (
     <>
-      <Grid container spacing={3}>
+      <Grid container direction="row" justify="center" alignItems="center">
         <Grid item xs={12}>
-          <Paper className={classes.paper}>
+          <Paper style={{ background: "blueviolet", color: "white" }} className={classes.paper}>
+            <Button onClick={() => history.push("/goToOffice")}>
+              <BiIcons.BiArrowBack />
+            </Button>
+          </Paper>
+        </Grid>
+      </Grid>
+      {/* <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Paper className={classes.paper} style={{ color: "white", background: "black" }}>
             <h1>Room Name</h1>
             <h6>Description</h6>
           </Paper>
         </Grid>
-      </Grid>
+      </Grid> */}
       <Grid container spacing={3}>
         <DndProvider backend={HTML5Backend}>
           {membersPanel()}

@@ -15,6 +15,7 @@ import EmployerSideRoom from "./pages/Employer/Room/EmployerSideRoom";
 import EmployeeDashboard from "./pages/Employee/EmployeeDashboard";
 import EmployeeSideRoom from "./pages/Employee/Rooms/EmployeeSideRoom";
 import Chat from "./pages/Chat/Chat";
+import Vedio from "./pages/Chat/Vedio";
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/employerRoom/:roomId" exact component={EmployerSideRoom} />
           <Route path="/employeeRoom/:roomId" exact component={EmployeeSideRoom} />
           <Route path="/Chat" exact component={Chat} />
+          <Route path="/Vedio" exact component={Vedio} />
         </Switch>
       </BrowserRouter>
     </>

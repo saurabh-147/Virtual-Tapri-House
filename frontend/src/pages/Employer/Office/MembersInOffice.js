@@ -7,6 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import { isAuthenticated } from "../../../api/auth";
 import * as TiIcons from "react-icons/ti";
 import * as BsIcons from "react-icons/bs";
+import * as RiIcons from "react-icons/ri";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -79,9 +80,12 @@ const MembersInOffice = () => {
                     {item?.userId?.email}
                   </Grid>
                   <Grid item>
-                    <Button as={Link} to={`/Chat?chatId=${item.chatId}&userId=${user._id}`}>
+                    <Button style={{ marginRight: "10px" }} as={Link} to={`/Chat?chatId=${item.chatId}&userId=${user._id}`}>
                       <BsIcons.BsChatDots />
                     </Button>
+                    {/* <Button as={Link} to={`/Vedio?chatId=${item.chatId}&userId=${user._id}`}>
+                      <RiIcons.RiVideoChatFill />
+                    </Button> */}
                   </Grid>
                 </Grid>
               </Paper>
