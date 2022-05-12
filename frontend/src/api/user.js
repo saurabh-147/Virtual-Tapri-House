@@ -48,3 +48,20 @@ export const acceptRequestToJoinOffice = (token) => {
       console.log(err);
     });
 };
+
+export const askQuestion = (inputQues) => {
+  return fetch(`/askQuestion/${inputQues}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
