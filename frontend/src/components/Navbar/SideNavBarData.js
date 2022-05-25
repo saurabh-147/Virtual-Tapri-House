@@ -23,7 +23,7 @@ const SideNavBarData = [
     flag: true,
   },
   {
-    title: "Go To Office",
+    title: "Create a office",
     path: "/goToOffice",
     icon: <IoIcons.IoIosPaper />,
     cName: "nav-text",

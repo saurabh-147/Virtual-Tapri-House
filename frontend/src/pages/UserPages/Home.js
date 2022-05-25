@@ -15,6 +15,8 @@ import img from "./student2.png";
 import { Link } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import SendSharpIcon from "@material-ui/icons/SendSharp";
+import { TextareaAutosize } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 
 const Home = () => {
   const [notification, setNotification] = useState(false);
@@ -78,12 +80,12 @@ const Home = () => {
 
   const onSubmit = () => {
     askQuestion(question).then((data) => {
-      if (data.success) {
-        setAnswer(data.response);
-        setQuestion("");
+      console.log(data);
+
+      if (data["ans"] == "empty") {
+        alert("No Similar question found , pls try something else");
       } else {
-        setQuestion("");
-        alert(data.msg);
+        setAnswer(data["ans"]);
       }
     });
   };
@@ -108,28 +110,40 @@ const Home = () => {
                 <img className="p-5 img" src={img} />
               </div>
             </div>
-            <div className="container">
-              <div className="row">
-                <div className="col-md-3 land_cards">
-                  <div className="text-center land_card">
-                    <i className="fa fa-briefcase land_icons" />
-                    <h3 className="land_sub">Create Office</h3>
-                  </div>
+
+            <div className="row">
+              <div className="col-md-4 land_cards">
+                <div className="text-center land_card">
+                  <i className="fa fa-briefcase land_icons" />
+                  <h3 className="land_sub">Create Office</h3>
                 </div>
-                <div className="col-md-3 land_cards">
-                  <div className="text-center land_card">
-                    <i class="fa fa-commenting-o land_icons"></i>
-                    <h3 className="land_sub">Chat With Employees</h3>
-                  </div>
+              </div>
+              <div className="col-md-4 land_cards">
+                <div className="text-center land_card">
+                  <i class="fa fa-commenting-o land_icons"></i>
+                  <h3 className="land_sub">Chat With Employees</h3>
                 </div>
-                <div className="col-md-3 land_cards">
-                  <div className="text-center land_card">
-                    <i class="fa fa-plus-square land_icons"></i>
-                    <h3 className="land_sub">Add Employees</h3>
-                  </div>
+              </div>
+              <div className="col-md-4 land_cards">
+                <div className="text-center land_card">
+                  <i class="fa fa-plus-square land_icons"></i>
+                  <h3 className="land_sub">Add Employees</h3>
                 </div>
-                <div className="col-md-3 land_cards">
-                  <div className="text-center land_card">
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-3"></div>
+              <div className="col-md-5 land_cards">
+                <div className="text-center land_card">
+                  <h4 style={{ marginBottom: "20px" }}>Smart FAQs</h4>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-around",
+                      marginBottom: "20px",
+                    }}
+                  >
                     <TextField
                       id="outlined-basic"
                       label="Ask Question"
@@ -145,15 +159,16 @@ const Home = () => {
                     >
                       Send
                     </Button>
-
-                    <TextField id="outlined-basic" value={answer}></TextField>
                   </div>
+
+                  <Typography variant="subtitle2">{answer}</Typography>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
       <Footer />
 
       <SuccessModal
