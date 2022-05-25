@@ -38,19 +38,14 @@ router.get("/officeDetailsForEmployer", middleware, (req, res) => {
 
 router.post("/addMembersToOffice", middleware, (req, res) => {
   const { email } = req.body;
-
+  console.log(email);
   User.findOne({ email: email })
     .then(async (user) => {
       if (!user) {
-        let info = await transporter.sendMail({
-          from: "saurabhgpta147@gmail.com", // sender address
-          to: email, // list of receivers
-          subject: `Lets Meet`, // Subject line
-          text: "Join the Office", // plain text body
-          html: `<div><b>Please Register the Application And Wait for Request to Join the Office</b> <a href = http://localhost:3000/signup>Join Office</a></div>`, // html body
+        return res.status(422).json({
+          success: false,
+          error: "User Doesn't Exist ",
         });
-
-        return res.status(422).json({ success: false, error: "User Doesn't Exist , An Mail has been sent to the User to Register the Application and Join the Office" });
       }
 
       user.offerToJoinOffice = req.user.haveofficeId;
@@ -58,7 +53,11 @@ router.post("/addMembersToOffice", middleware, (req, res) => {
       user
         .save()
         .then((user) => {
-          return res.status(200).json({ success: true, message: "Request Succesfully sent to join the office , When he accept the request he will added to your room" });
+          return res.status(200).json({
+            success: true,
+            message:
+              "Request Succesfully sent to join the office , When he accept the request he will added to your room",
+          });
         })
         .catch((err) => {
           console.log(err);
